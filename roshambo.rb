@@ -2,44 +2,80 @@ ENTRY = { "p" => "paper", "r" => "rock", "s" => "scissors" }
 VALID_CHOICES = ENTRY.keys
 COMPUTER_CHOICES = ENTRY.values
 
-WINNERS = [[:scissors, :paper], [:paper, :rock], [:rock, :scissors]]
+WINNERS = [["scissors", "paper"], ["paper", "rock"], ["rock", "scissors"]]
 LOSERS = WINNERS.map(&:reverse)
 
 class Roshambo
   def initialize(player_name)
     @player = player_name
-    @player_score = @computer_score = @ties = 0
+    @engagements_player_wins = @engagements_computer_wins = @engagements_ties = 0
+    @total_bouts_player_wins = 0
+    @total_bouts_computer_wins = 0
+    # load_leaderboard = 0
   end
 
   def play(winning_score)
-    while @player_score < winning_score && @computer_score < winning_score
-      puts "#{@player} score: #{@player_score} " +
-      "Computer score: #{@computer_score} " + "Ties: #{@ties}"
+    while @total_bouts_player_wins < winning_score && @total_bouts_computer_wins < winning_score
+      while @engagements_player_wins < winning_score && @engagements_computer_wins < winning_score
+        puts "#{@player} score: #{@engagements_player_wins} " +
+        "Computer score: #{@engagements_computer_wins} " + "Ties: #{@engagements_ties}"
 
-      player = player_choice
-      computer = computer_choice
-      puts "#{@player} chooses #{player.to_s}"
-      puts "Computer chooses #{computer.to_s}"
+        player = player_choice
+        computer = computer_choice
+        puts "#{@player} chooses #{player.to_s}"
+        puts "Computer chooses #{computer.to_s}"
 
-      case player_outcome [player, computer]
-      when :WIN
-        puts "#{player.to_s} beats #{computer.to_s}, #{@player} WINS the round!"
-        @player_score += 1
-      when :LOSE
-        puts "#{computer.to_s} beats #{@player}, Computer WINS the round!"
-        @computer_score += 1
-      else
-        puts "It's a TIE! Choose again."
-        @ties += 1
+        case player_outcome([player, computer])
+        when :WIN
+          puts "#{player.to_s} beats #{computer.to_s}, #{@player} WINS the round!"
+          @engagements_player_wins += 1
+        when :LOSE
+          puts "#{computer.to_s} beats #{@player}, Computer WINS the round!"
+          @engagements_computer_wins += 1
+        else
+          puts "It's a TIE! Choose again."
+          @engagements_ties += 1
+        end
       end
+      puts "\nFinal score: player: #{@engagements_player_wins}, " + "computer: #{@engagements_computer_wins} (ties: #{@engagements_ties})"
+
+      if @engagements_player_wins == 2
+        puts "Player WINS!"
+        @total_bouts_player_wins += 1
+      else
+        puts "Computer WINS!"
+        @total_bouts_computer_wins += 1
+      end
+      @engagements_player_wins = 0
+      @engagements_computer_wins = 0
+      @engagements_ties = 0
+      # save_leaderboard
+      # show_leaderboard
     end
-    puts "\nFinal score: player: #{@player_score}, " + "computer: #{@computer_score} (ties: #{@ties})"
-    puts (@player_score == 2) ? "Player wins!" : "Yea! Computer wins!"
+
   end
+
 
   def computer_choice
     ["rock", "paper", "scissors"].sample
   end
+
+  # def save_leaderboard
+  #   file = File.open("leaderboard.txt", "w")
+  #   file.puts @total_bouts_player_wins
+  #   file.puts @total_bouts_computer_wins
+  #   file.close
+  # end
+  #
+  # def load_leaderboard
+  #   file = File.open("leaderboard.txt", "r")
+  #   file.gets @total_bouts_player_wins
+  #   file.gets @total_bouts_computer_wins
+  # end
+  #
+  # def show_leaderboard
+  #
+  # end
 
   private
 
@@ -60,11 +96,12 @@ class Roshambo
 end
 
 puts "Prepare to Roshambo! Please enter your name:"
-player_name = gets.chomp.upcase
+player_name = gets.chomp.capitalize
 
 if player_name.empty?
   puts "Player not detected, existing game."
+  exit
 else
   roshambo = Roshambo.new(player_name)
-  roshambo.play(3)
+  roshambo.play(2)
 end
