@@ -1,6 +1,6 @@
-entry = { p: "paper", r: "rock", s: "scissors" }
-valid_choice = entry.keys
-computer_choices = entry.values
+ENTRY = { "p" => "paper", "r" => "rock", "s" => "scissors" }
+VALID_CHOICES = ENTRY.keys
+COMPUTER_CHOICES = ENTRY.values
 
 WINNERS = [[:scissors, :paper], [:paper, :rock], [:rock, :scissors]]
 LOSERS = WINNERS.map(&:reverse)
@@ -47,7 +47,7 @@ class Roshambo
     loop do
       print "Choose rock (r), paper (p) or scissors (s): "
       choice = gets.chomp.downcase
-      return entry[choice] if entry.key?(choice)
+      return ENTRY[choice] if ENTRY.key?(choice)
       puts "That entry is invalid. Please re-enter"
     end
   end
