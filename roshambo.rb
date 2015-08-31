@@ -47,7 +47,7 @@ class Roshambo
     loop do
       print "Choose rock (r), paper (p) or scissors (s): "
       choice = gets.chomp.downcase
-      return valid_choice[choice] if valid_choice.key?(choice)
+      return entry[choice] if entry.key?(choice)
       puts "That entry is invalid. Please re-enter"
     end
   end
