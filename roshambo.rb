@@ -11,14 +11,15 @@ class Roshambo
     @engagements_player_wins = @engagements_computer_wins = @engagements_ties = 0
     @total_bouts_player_wins = 0
     @total_bouts_computer_wins = 0
+    @total_bouts_ties = 0
     # load_leaderboard = 0
   end
 
   def play(winning_score)
     while @total_bouts_player_wins < winning_score && @total_bouts_computer_wins < winning_score
       while @engagements_player_wins < winning_score && @engagements_computer_wins < winning_score
-        puts "#{@player} score: #{@engagements_player_wins} " +
-        "Computer score: #{@engagements_computer_wins} " + "Ties: #{@engagements_ties}"
+        puts "#{@player} score: #{@total_bouts_player_wins} " +
+        "Computer score: #{@total_bouts_computer_wins} " + "Ties: #{@engagements_ties}"
 
         player = player_choice
         computer = computer_choice
@@ -42,9 +43,12 @@ class Roshambo
       if @engagements_player_wins == 2
         puts "Player WINS!"
         @total_bouts_player_wins += 1
-      else
+      elsif @engagements_computer_wins == 2
         puts "Computer WINS!"
         @total_bouts_computer_wins += 1
+      else @engagements_ties == 2
+        puts "It's a TIE!"
+        @total_bouts_ties += 1
       end
       @engagements_player_wins = 0
       @engagements_computer_wins = 0
