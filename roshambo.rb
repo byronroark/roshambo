@@ -12,7 +12,6 @@ class Roshambo
     @total_bouts_player_wins = 0
     @total_bouts_computer_wins = 0
     @total_bouts_ties = 0
-    # load_leaderboard = 0
   end
 
   def play(winning_score)
@@ -38,7 +37,7 @@ class Roshambo
           @engagements_ties += 1
         end
       end
-      puts "\nFinal score: player: #{@engagements_player_wins}, " + "computer: #{@engagements_computer_wins} (ties: #{@engagements_ties})"
+      puts "Final score: player: #{@engagements_player_wins}, " + "computer: #{@engagements_computer_wins} (ties: #{@engagements_ties})"
 
       if @engagements_player_wins == 2
         puts "Player WINS!"
@@ -53,28 +52,30 @@ class Roshambo
       @engagements_player_wins = 0
       @engagements_computer_wins = 0
       @engagements_ties = 0
-      # save_leaderboard
+      save_leaderboard
       # show_leaderboard
     end
-
   end
-
 
   def computer_choice
     ["rock", "paper", "scissors"].sample
   end
 
-  # def save_leaderboard
-  #   file = File.open("leaderboard.txt", "w")
-  #   file.puts @total_bouts_player_wins
-  #   file.puts @total_bouts_computer_wins
-  #   file.close
-  # end
-  #
+  def save_leaderboard
+    # store the scores into an array and sort_by
+    file = File.open("leaderboard.txt", "w")
+    file.puts "#{@player} score:  #{@total_bouts_player_wins}"
+    file.puts "Computer score:  #{@total_bouts_computer_wins}"
+    file.puts "Total ties:  #{@total_bouts_ties}"
+    file.close
+  end
+
   # def load_leaderboard
   #   file = File.open("leaderboard.txt", "r")
   #   file.gets @total_bouts_player_wins
   #   file.gets @total_bouts_computer_wins
+  #   file.gets @total_bouts_ties
+  #   file.show_leaderboard
   # end
   #
   # def show_leaderboard
@@ -103,7 +104,7 @@ puts "Prepare to Roshambo! Please enter your name:"
 player_name = gets.chomp.capitalize
 
 if player_name.empty?
-  puts "Player not detected, existing game."
+  puts "Player not detected, exiting game."
   exit
 else
   roshambo = Roshambo.new(player_name)
