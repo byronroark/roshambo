@@ -26,10 +26,10 @@ class Roshambo
         puts "Computer chooses #{computer.to_s}"
 
         case player_outcome([player, computer])
-        when :WIN
+        when :win
           puts "#{player.to_s} beats #{computer.to_s}, #{@player} WINS the round!"
           @engagements_player_wins += 1
-        when :LOSE
+        when :lose
           puts "#{computer.to_s} beats #{@player}, Computer WINS the round!"
           @engagements_computer_wins += 1
         else
@@ -94,9 +94,9 @@ class Roshambo
   end
 
   def player_outcome(plays)
-    return :WIN  if WINNERS.include?(plays)
-    return :LOSE if LOSERS.include?(plays)
-    :TIE
+    return :win  if WINNERS.include?(plays)
+    return :lose if LOSERS.include?(plays)
+    :tie
   end
 end
 
